@@ -62,7 +62,7 @@ exports.updateMenu = function () {
 exports.createShortcut = function (callback) {
   spawnUpdate([
     '--createShortcut',
-    path.basename(process.execPath),
+    'FUCK',
     '--shortcut-locations',
     'StartMenu'
   ], callback)
@@ -71,12 +71,12 @@ exports.createShortcut = function (callback) {
 exports.removeShortcut = function (callback) {
   spawnUpdate([
     '--removeShortcut',
-    path.basename(process.execPath)
+    'FUCK'
   ], callback)
 }
 
 function spawnUpdate (args, callback) {
-  var updateExe = path.resolve(process.execPath, '..', '..', 'Update.exe')
+  var updateExe = path.resolve(process.execPath, '..', '..', '..', 'electron-winstaller', 'vendor', 'Update.exe')
   var stdout = ''
   var spawned = null
 

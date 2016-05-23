@@ -1,0 +1,7 @@
+input {
+  outline: none;
+}
+
+tr:hover {
+				background-color: #ABD;
+}

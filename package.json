@@ -1,8 +1,8 @@
 {
-  "name": "ElectronAPIDemos",
-  "productName": "Electron API Demos",
+  "name": "Nf5",
+  "productName": "Nf5",
   "version": "1.0.1",
-  "description": "Electron interactive API demos",
+  "description": "CHESS!",
   "private": true,
   "main": "main.js",
   "scripts": {
@@ -10,10 +10,10 @@
     "dev": "electron . --debug",
     "lint": "standard",
     "test": "mocha tests && npm run lint",
-    "sign-exe": "signcode ./out/ElectronAPIDemos-win32-ia32/ElectronAPIDemos.exe --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'http://electron.atom.io'",
-    "sign-installer": "signcode ./out/windows-installer/ElectronAPIDemosSetup.exe --cert ~/electron-api-demos.p12 --prompt --name 'Electron API Demos' --url 'http://electron.atom.io'",
+    "sign-exe": "signcode ./out/Nf5-win32-ia32/Nf5.exe --cert ~/electron-api-demos.p12 --prompt --name 'Nf5' --url 'http://electron.atom.io'",
+    "sign-installer": "signcode ./out/windows-installer/Nf5Setup.exe --cert ~/electron-api-demos.p12 --prompt --name 'Nf5' --url 'http://electron.atom.io'",
     "pack-mac": "electron-packager . --asar --overwrite --platform=darwin --arch=x64 --icon=assets/app-icon/mac/app.icns --prune=true --out=out --osx-sign.identity='Developer ID Application: GitHub' --extend-info=assets/mac/info.plist",
-    "pack-win": "electron-packager . ElectronAPIDemos --asar  --overwrite --platform=win32 --arch=ia32 --icon=assets/app-icon/win/app.ico --prune=true --out=out --version-string.CompanyName='GitHub, Inc.' --version-string.FileDescription='Electron API Demos' --version-string.ProductName='Electron API Demos'",
+    "pack-win": "electron-packager . Nf5 --asar  --overwrite --platform=win32 --arch=ia32 --icon=assets/app-icon/win/app.ico --prune=true --out=out --version-string.CompanyName='GitHub, Inc.' --version-string.FileDescription='Nf5' --version-string.ProductName='Nf5'",
     "pack-linux": "electron-packager . --asar --overwrite --platform=linux --arch=x64 --icon=assets/app-icon/png/64.png --prune=true --out=out",
     "package": "npm run pack-mac && npm run pack-win && npm run pack-linux",
     "installer": "node ./script/installer.js",
@@ -22,12 +22,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron/electron-api-demos.git"
+    "url": "git+https://github.com/chad-russell/chess_analysis.git"
   },
   "keywords": [
-    "Electron",
-    "API",
-    "demo"
+    "Chess",
+    "Nf5"
   ],
   "author": "GitHub",
   "license": "MIT",
@@ -53,7 +52,9 @@
     "electron-json-storage": "^2.0.0",
     "electron-shortcut-normalizer": "^1.0.0",
     "glob": "^6.0.4",
-    "highlight.js": "^9.3.0"
+    "highlight.js": "^9.3.0",
+    "uci": "^0.3.3",
+    "electron-settings": "^1.0.4"
   },
   "standard": {
     "env": {

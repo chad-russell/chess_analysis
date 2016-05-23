@@ -56,13 +56,13 @@ function zipAssets () {
 
   const zipAssets = [{
     name: 'electron-api-demos-mac.zip',
-    path: path.join(outPath, 'Electron API Demos-darwin-x64', 'Electron API Demos.app')
+    path: path.join(outPath, 'Nf5-darwin-x64', 'Nf5.app')
   }, {
     name: 'electron-api-demos-windows.zip',
-    path: path.join(outPath, 'ElectronAPIDemos-win32-ia32')
+    path: path.join(outPath, 'Nf5-win32-ia32')
   }, {
     name: 'electron-api-demos-linux.zip',
-    path: path.join(outPath, 'Electron API Demos-linux-x64')
+    path: path.join(outPath, 'Nf5-linux-x64')
   }]
 
   return Promise.all(zipAssets.map(zipAsset)).then((zipAssets) => {
@@ -70,11 +70,11 @@ function zipAssets () {
       name: 'RELEASES',
       path: path.join(outPath, 'windows-installer', 'RELEASES')
     }, {
-      name: 'ElectronAPIDemosSetup.exe',
-      path: path.join(outPath, 'windows-installer', 'ElectronAPIDemosSetup.exe')
+      name: 'Nf5Setup.exe',
+      path: path.join(outPath, 'windows-installer', 'Nf5Setup.exe')
     }, {
-      name: `ElectronAPIDemos-${version}-full.nupkg`,
-      path: path.join(outPath, 'windows-installer', `ElectronAPIDemos-${version}-full.nupkg`)
+      name: `Nf5-${version}-full.nupkg`,
+      path: path.join(outPath, 'windows-installer', `Nf5-${version}-full.nupkg`)
     }])
   })
 }

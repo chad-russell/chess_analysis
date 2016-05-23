@@ -1,100 +1,50 @@
-const path = require('path')
-const glob = require('glob')
-const electron = require('electron')
-const autoUpdater = require('./auto-updater')
+'use strict';
 
-const BrowserWindow = electron.BrowserWindow
-const app = electron.app
+const {app, BrowserWindow, ipcMain} = require('electron');
 
-const debug = /--debug/.test(process.argv[2])
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+var mainWindow = null;
 
-var mainWindow = null
-
-function initialize () {
-  var shouldQuit = makeSingleInstance()
-  if (shouldQuit) return app.quit()
-
-  loadDemos()
-
-  function createWindow () {
-    var windowOptions = {
-      width: 1080,
-      minWidth: 680,
-      height: 840
-    }
-    if (process.platform === 'linux') {
-      windowOptions.icon = path.join(__dirname, '/assets/app-icon/png/512.png')
-    }
-
-    mainWindow = new BrowserWindow(windowOptions)
-    mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-
-    // Launch fullscreen with DevTools open, usage: npm run debug
-    if (debug) {
-      mainWindow.webContents.openDevTools()
-      mainWindow.maximize()
-    }
-
-    mainWindow.on('closed', function () {
-      mainWindow = null
-    })
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform != 'darwin') {
+    app.quit();
   }
+});
 
-  app.on('ready', function () {
-    createWindow()
-    autoUpdater.initialize()
-  })
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+app.on('ready', () => {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({width: 100000, height: 100000});
 
-  app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-      app.quit()
+  // and load the index.html of the app.
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools();
+
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function() {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
+  });
+
+  process.argv.forEach((a) => {
+    if (a.endsWith('.pgn')) {
+      mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.send('import-pgn', a);
+      });
     }
-  })
+  });
 
-  app.on('activate', function () {
-    if (mainWindow === null) {
-      createWindow()
-    }
-  })
-}
-
-// Make this app a single instance app.
-//
-// The main window will be restored and focused instead of a second window
-// opened when a person attempts to launch a second instance.
-//
-// Returns true if the current version of the app should quit instead of
-// launching.
-function makeSingleInstance () {
-  return app.makeSingleInstance(function () {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-    }
-  })
-}
-
-// Require each JS file in the main-process dir
-function loadDemos () {
-  var files = glob.sync(path.join(__dirname, 'main-process/**/*.js'))
-  files.forEach(function (file) {
-    require(file)
-  })
-  autoUpdater.updateMenu()
-}
-
-// Handle Squirrel on Windows startup events
-switch (process.argv[1]) {
-  case '--squirrel-install':
-    autoUpdater.createShortcut(function () { app.quit() })
-    break
-  case '--squirrel-uninstall':
-    autoUpdater.removeShortcut(function () { app.quit() })
-    break
-  case '--squirrel-obsolete':
-  case '--squirrel-updated':
-    app.quit()
-    break
-  default:
-    initialize()
-}
+  app.on('open-file', (event, path) => {
+    console.log('opening', path);
+    mainWindow.webContents.send('import-pgn', path);
+  });
+});
