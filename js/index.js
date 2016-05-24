@@ -19,8 +19,9 @@ const xtag = require('./js/x-tag-core.min.js');
 const requirechess = require('./js/chess.min.js');
 const uciwrapper = require('./js/uciwrapper');
 const tabbox = require('./js/x-tabbox');
-const requiredialog = require('electron').remote.dialog;
-const remote = require('electron').remote;
+const electron = require('electron');
+const remote = electron.remote;
+const requiredialog = remote.dialog;
 const fs = require('fs');
 const pgn = require('./js/pgn');
 const ElectronSettings = require('electron-settings');
@@ -306,7 +307,7 @@ if (process.platform == 'darwin') {
       {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click: function() { app.quit(); }
+        click: function() { electron.ipcRenderer.send('app-quit'); }
       },
     ]
   });

@@ -1,10 +1,13 @@
 'use strict';
 
 const {app, BrowserWindow, ipcMain} = require('electron');
+const fs = require('fs');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null;
+
+ipcMain.on('app-quit', (event, arg) => app.quit());
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -13,6 +16,13 @@ app.on('window-all-closed', () => {
   if (process.platform != 'darwin') {
     app.quit();
   }
+});
+
+var openFile = null;
+
+app.on('open-file', (event, path) => {
+  event.preventDefault();
+  openFile = path;
 });
 
 // This method will be called when Electron has finished
@@ -43,8 +53,9 @@ app.on('ready', () => {
     }
   });
 
-  app.on('open-file', (event, path) => {
-    console.log('opening', path);
-    mainWindow.webContents.send('import-pgn', path);
-  });
+  if (openFile) {
+    mainWindow.webContents.on('did-finish-load', () => {
+      mainWindow.webContents.send('import-pgn', openFile);
+    });
+  }
 });

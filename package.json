@@ -12,7 +12,7 @@
     "test": "mocha tests && npm run lint",
     "sign-exe": "signcode ./out/Nf5-win32-ia32/Nf5.exe --cert ~/electron-api-demos.p12 --prompt --name 'Nf5' --url 'http://electron.atom.io'",
     "sign-installer": "signcode ./out/windows-installer/Nf5Setup.exe --cert ~/electron-api-demos.p12 --prompt --name 'Nf5' --url 'http://electron.atom.io'",
-    "pack-mac": "electron-packager . --asar --overwrite --platform=darwin --arch=x64 --icon=assets/app-icon/mac/app.icns --prune=true --out=out --osx-sign.identity='Developer ID Application: GitHub' --extend-info=assets/mac/info.plist",
+    "pack-mac": "electron-packager . --asar --overwrite --platform=darwin --arch=x64 --icon=assets/app-icon/mac/app.icns --prune=true --out=out -extend-info=assets/mac/info.plist",
     "pack-win": "electron-packager . Nf5 --asar  --overwrite --platform=win32 --arch=ia32 --icon=assets/app-icon/win/app.ico --prune=true --out=out --version-string.CompanyName='GitHub, Inc.' --version-string.FileDescription='Nf5' --version-string.ProductName='Nf5'",
     "pack-linux": "electron-packager . --asar --overwrite --platform=linux --arch=x64 --icon=assets/app-icon/png/64.png --prune=true --out=out",
     "package": "npm run pack-mac && npm run pack-win && npm run pack-linux",

@@ -347,7 +347,6 @@ xtag.register('x-board-controls', {
 			board.style.height = viewportHeight + 'px';
 
 			ipcRenderer.on('import-pgn', (event, message) => {
-				console.log(message);
 				importPgn(message);
 			});
 
