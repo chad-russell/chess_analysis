@@ -2,9 +2,16 @@
 
 ## Screenshots
 
+Explore PGN Database
 # <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png" align="center" alt="Screenshot1">
+
+Setup Position
 # <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png" align="center" alt="Screenshot2">
+
+Draw Arrows / Highlight Squares
 # <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png" align="center" alt="Screenshot3">
+
+Computer Analysis
 # <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png" align="center" alt="Screenshot4">
 
 ---
