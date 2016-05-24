@@ -2,10 +2,10 @@
 
 ## Screenshots
 
-[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png)
-[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png)
-[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png)
-[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png)
+[Screenshot1](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png)
+[Screenshot2](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png)
+[Screenshot3](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png)
+[Screenshot4](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png)
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## Downloading
 
-You can [download the latest release](https://github.com/Nf5/Nf5/releases) for your operating system or build it yourself (see the last section of this README).
+You can [download the latest release](https://github.com/Nf5/Nf5/releases) for your operating system or build it yourself (see below).
 
 ## Building
 
