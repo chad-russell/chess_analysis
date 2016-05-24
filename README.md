@@ -2,10 +2,10 @@
 
 ## Screenshots
 
-[Screenshot1](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png)
-[Screenshot2](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png)
-[Screenshot3](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png)
-[Screenshot4](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png)
+# <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png" align="center" alt="Screenshot1">
+# <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png" align="center" alt="Screenshot2">
+# <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png" align="center" alt="Screenshot3">
+# <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png" align="center" alt="Screenshot4">
 
 ---
 
