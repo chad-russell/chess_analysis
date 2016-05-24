@@ -20,27 +20,25 @@ announcements. Visit the [electron website](http://electron.atom.io).
 
 ## Using
 
-You can [download the latest release](https://github.com/electron/electron-api-demos/releases) for your operating system or build it yourself (see below).
+You can [download the latest release](https://github.com/Nf5/Nf5) for your operating system or build it yourself (see below).
+
+## Adding Annotations
+
+## Future TODO
 
 ## Building
 
 You'll need [Node.js](https://nodejs.org) installed on your computer in order to build this app.
 
 ```bash
-$ git clone https://github.com/electron/electron-api-demos
-$ cd electron-api-demos
+$ git clone https://github.com/Nf5/Nf5
+$ cd Nf5
 $ npm install
 $ npm start
 ```
-
-If you don't wish to clone, you can [download the source code](https://github.com/electron/electron-api-demos/archive/master.zip).
 
 For easier developing you can launch the app in fullscreen with DevTools open:
 
 ```bash
 $ npm run dev
 ```
-
-## Extending
-
- [Read the docs](docs.md) to learn more about how this app is built or how to [add a new demo](docs.md#add-a-section-or-demo).
