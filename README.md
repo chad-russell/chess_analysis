@@ -1,6 +1,11 @@
-# <img src="https://cloud.githubusercontent.com/assets/378023/15172388/b2b81950-1790-11e6-9a7c-ccc39912bb3a.png" width="60px" align="center" alt="Nf5 icon"> Nf5
+# <img src="https://github.com/chad-russell/chess_analysis/blob/master/assets/app-icon/png/64.png" width="60px" align="center" alt="Nf5 icon"> Nf5
 
 ## Screenshots
+
+[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot1.png)
+[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot2.png)
+[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot3.png)
+[](https://github.com/chad-russell/chess_analysis/blob/master/assets/screenshots/Screenshot4.png)
 
 ---
 
