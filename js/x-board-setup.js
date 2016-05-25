@@ -1,4 +1,5 @@
 require('./x-piece');
+var {clipboard} = require('electron');
 
 xtag.register('x-board-setup', {
   content: `
@@ -39,15 +40,12 @@ xtag.register('x-board-setup', {
       <x-piece style="position: absolute; margin-left: 83.3%; width: 8.33%; height: 100%" name="wq"></x-piece>
       <x-piece style="position: absolute; margin-left: 91.63%; width: 8.33%; height: 100%" name="wk"></x-piece>
     </div>
-		<button class='pure-button' id='flip'>flip board</button>
-		<button class='pure-button' id='reset'>reset to start position</button>
-		<button class='pure-button' id='clear'>clear board</button>
+		<button class='pure-button' id='flip'>Flip Board</button>
+		<button class='pure-button' id='reset'>Reset to Start Position</button>
+		<button class='pure-button' id='clear'>Clear Board</button>
+    <button class='pure-button' id='fen_button'>Paste FEN</button>
 
     <button class='pure-button pure-button-primary' id='done'>done</button>
-		<span>
-			<input id='fen_input' />
-			<button class='pure-button' id='fen_button'>fen</button>
-		</span>
   </div>
   `,
   lifecycle: {
@@ -70,23 +68,39 @@ xtag.register('x-board-setup', {
 			resetButton.addEventListener('click', () => {
 				self.board.chess = new requirechess.Chess();
 				self.board.loadPieces();
+        self.board.boardPieces.forEach((p) => {
+          p.addEventListener('mousedown', (ev) => {
+            setDragTarget(p, ev);
+          });
+        });
 			});
 
 			var clearButton = xtag.queryChildren(self, 'div button#clear')[0];
 			clearButton.addEventListener('click', () => {
 				self.board.chess.clear();
+        self.board.chess.put({type: 'k', color: 'w'}, 'e1');
+        self.board.chess.put({type: 'k', color: 'b'}, 'e8');
 				self.board.loadPieces();
 			});
 
       var dupPieces = [];
 
-      var fenInput = xtag.queryChildren(self, 'div span input#fen_input')[0];
-      var fenButton = xtag.queryChildren(self, 'div span button#fen_button')[0];
+      var fenButton = xtag.queryChildren(self, 'div button#fen_button')[0];
       fenButton.addEventListener('click', () => {
-				self.board.chess = new requirechess.Chess(fenInput.value);
+        var clipText = clipboard.readText();
+
+				// self.board.chess = new requirechess.Chess(fenInput.value);
+        self.board.chess = new requirechess.Chess(clipText);
 				self.board.loadPieces();
 
-				var fenParts = fenInput.value.split(' ');
+        self.board.boardPieces.forEach((p) => {
+          p.addEventListener('mousedown', (ev) => {
+            setDragTarget(p, ev);
+          });
+        });
+
+				// var fenParts = fenInput.value.split(' ');
+        var fenParts = clipText.split(' ');
 
 				var whiteToMove = xtag.queryChildren(self, 'div span input#black_to_move')[0];
 				var blackToMove = xtag.queryChildren(self, 'div span input#black_to_move')[0];
@@ -178,8 +192,6 @@ xtag.register('x-board-setup', {
 					else {
 						boardPiece.animateCoordinates(boardPiece.rank, boardPiece.file, false);
 					}
-
-					console.log(boardPiece.rank, boardPiece.file);
 
           boardPiece.addEventListener('mousedown', (ev) => {
 						if (ev.altKey) {

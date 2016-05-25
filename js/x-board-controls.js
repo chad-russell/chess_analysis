@@ -50,7 +50,6 @@ xtag.register('x-database', {
 						row.style.backgroundColor = '#ABD';
 					}
 					else {
-						console.log(row.style.backgroundColor);
 						row.style.backgroundColor = '';
 					}
 				});
@@ -115,37 +114,22 @@ xtag.register('x-database', {
 					var eventTag = parsed.tagPairs.filter((tp) => {
 						return tp.key.toLowerCase() == 'EVENT'.toLowerCase();
 					});
-					if (eventTag.length > 0) {
-						console.log(eventTag[0].value);
-					}
 
 					var dateTag = parsed.tagPairs.filter((tp) => {
 						return tp.key.toLowerCase() == 'DATE'.toLowerCase();
 					});
-					if (dateTag.length > 0) {
-						console.log(dateTag[0].value);
-					}
 
 					var siteTag = parsed.tagPairs.filter((tp) => {
 						return tp.key.toLowerCase() == 'SITE'.toLowerCase();
 					});
-					if (siteTag.length > 0) {
-						console.log(siteTag[0].value);
-					}
 
 					var roundTag = parsed.tagPairs.filter((tp) => {
 						return tp.key.toLowerCase() == 'ROUND'.toLowerCase();
 					});
-					if (roundTag.length > 0) {
-						console.log(roundTag[0].value);
-					}
 
 					var ecoTag = parsed.tagPairs.filter((tp) => {
 						return tp.key.toLowerCase() == 'ECO'.toLowerCase();
 					});
-					if (ecoTag.length > 0) {
-						console.log(ecoTag[0].value);
-					}
 
 					this.body.appendChild(row);
 
@@ -268,7 +252,7 @@ xtag.register('x-color-dialog', {
 			});
 		}
 	},
-	methods: {
+	methods: 	{
 		light: function() {
 				return this.lightColor.value;
 		},
@@ -415,8 +399,9 @@ xtag.register('x-board-controls', {
 				p = uciwrapper.stopAnalysis(p, engine);
 			}
 
+			var moves = xtag.queryChildren(this, 'div x-tabbox ul li x-moves')[0];
+
 			function startAnalysisHelper() {
-				console.log('starting analysis');
 				self.analyzing = true;
 
 				function formatMoves(moves, cp) {
@@ -432,10 +417,9 @@ xtag.register('x-board-controls', {
 				engine = new uciwrapper.Engine(settings.get('engine')[0]);
 				p = uciwrapper.startEngine(engine);
 				var fenPos = board.chess.fen();
-				console.log(fenPos);
 				p = uciwrapper.setPosition(p, engine, fenPos);
 				p = uciwrapper.setMultiPV(p, engine, 4);
-				p = uciwrapper.startAnalysis(p, engine, (mpv, moves, cp) => {
+				p = uciwrapper.startAnalysis(p, engine, (mpv, _moves, cp) => {
 					// invert evaluation if black to move
 					if (board.chess.turn() == 'b') {
 						cp = -cp;
@@ -444,13 +428,17 @@ xtag.register('x-board-controls', {
 					switch (mpv) {
 						case 1:
 						line3.evaluation = cp;
-						line3.moves = formatMoves(moves);
+						line3.moves = formatMoves(_moves);
+						board.history.current.evaluation = cp;
+						if (board.history.current.move) {
+							board.history.current.move.updateEvaluation();
+						}
 						case 2:
 						line2.evaluation = cp;
-						line2.moves = formatMoves(moves);
+						line2.moves = formatMoves(_moves);
 						case 3:
 						line1.evaluation = cp;
-						line1.moves = formatMoves(moves);
+						line1.moves = formatMoves(_moves);
 					}
 				});
 			}
@@ -471,7 +459,6 @@ xtag.register('x-board-controls', {
 				}
 			});
 
-			var moves = xtag.queryChildren(this, 'div x-tabbox ul li x-moves')[0];
 			moves.board = board;
 
 			var setDragTarget = (child) => {

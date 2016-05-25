@@ -25,13 +25,12 @@ const requiredialog = remote.dialog;
 const fs = require('fs');
 const pgn = require('./js/pgn');
 const ElectronSettings = require('electron-settings');
+// const sqlite3 = require('sqlite3');
 
 // components
 require('./js/x-board');
 require('./js/x-board-setup');
 require('./js/x-board-controls');
-
-// var sqlite3 = require('sqlite3').verbose();
 
 // var db = new sqlite3.Database(':memory:');
 // db.serialize(() => {
@@ -174,9 +173,6 @@ var template = [
           fs.writeFile(savePath, pgn.toString(board().history), (err) => {
             if (err) {
               console.log(err);
-            }
-            else {
-              console.log('saved!');
             }
           });
         }

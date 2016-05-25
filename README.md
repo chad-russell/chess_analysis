@@ -16,12 +16,10 @@ Computer Analysis
 
 ---
 
-## Features
+## Other Features
 
-- Set up position
-  - Click and drag pieces to set up a position, or paste an FEN string
 - Import PGN file, add/explore arbitrarily deep trees of variations, and export when done.
-- Add UCI engine and see top engine lines, with the option to automatically add these lines as variations to the current position
+- Traing mode.  When in training mode, No moves are visible on the moves list except those which have already been played.  In addition, whenever the user plays a move which has a continuation, the next move in the continuation will be automatically made by the program.  This is very useful for opening, endgame, and tactics training.
 - Add/Edit comments on any move
 - Add common annotations (!, !!, !?, ?!, ??, etc) to moves
 - Highlighting squares and Drawing Arrows

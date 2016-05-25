@@ -22,18 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chad-russell/chess_analysis.git"
+    "url": "git+https://github.com/Nf5/Nf5.git"
   },
   "keywords": [
     "Chess",
     "Nf5"
   ],
-  "author": "GitHub",
+  "author": "Chad Russell",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/electron/electron-api-demos/issues"
-  },
-  "homepage": "https://github.com/electron/electron-api-demos#readme",
   "devDependencies": {
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
@@ -46,7 +42,8 @@
     "rimraf": "^2.5.2",
     "signcode": "^0.4.0",
     "spectron": "~3.0.0",
-    "standard": "^6.0.8"
+    "standard": "^6.0.8",
+    "electron-rebuild": "^1.1.4"
   },
   "dependencies": {
     "electron-json-storage": "^2.0.0",
@@ -54,7 +51,8 @@
     "glob": "^6.0.4",
     "highlight.js": "^9.3.0",
     "uci": "^0.3.3",
-    "electron-settings": "^1.0.4"
+    "electron-settings": "^1.0.4",
+    "sqlite3": "^3.1.4"
   },
   "standard": {
     "env": {

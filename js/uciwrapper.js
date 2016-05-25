@@ -35,7 +35,6 @@ exports.setMultiPV = function(p, e, mpv) {
 
 exports.startAnalysis = function(p, e, callback) {
   return p.then(() => {
-    console.log('startAnalysis');
     return e.goInfiniteCommand((info) => {
       // console.log(info);
 
@@ -64,15 +63,19 @@ exports.startAnalysis = function(p, e, callback) {
       }
 
       // look for 'pv'
-      var pvMatch = / pv( [a-h0-8][a-h0-8][a-h0-8][a-h0-8])+/
+      var pvMatch = / pv( [a-h][0-8][a-h][0-8][nNbBrRqQ]?)+/
       var pvFound = pvMatch.exec(info);
       var split = null;
       if (pvFound && pvFound.length > 0) {
         var pvValue = pvFound[0].substring(4)
 
         // split up moves
-        var split = pvValue.split(' ').map((v) => {
-          return {'from': v.substring(0, 2), 'to': v.substring(2)};
+        split = pvValue.split(' ').map((v) => {
+          var move = {'from': v.substring(0, 2), 'to': v.substring(2, 4)};
+          if (v.length == 5) {
+            move.promotion = v[4];
+          }
+          return move;
         });
       }
 

@@ -322,7 +322,6 @@ function nextToken(text) {
     var re = new RegExp('[0-9]+');
     var intMatch = re.exec(text.data);
     if (intMatch && intMatch.length > 0 && intMatch.index === 0) {
-      console.log('int match:', intMatch);
       text.eat(intMatch[0].length);
       return token(tokens.NAG, intMatch[0]);
     }
@@ -358,6 +357,7 @@ function nextToken(text) {
 
   // ignore anything left over
   text.eat(text.length - 1);
+  // return token(tokens.RESULTUNKNOWN, '*');
   return null;
 }
 
@@ -378,7 +378,10 @@ function parseGame(lexed) {
   // parse game text
   var moves = parseMoveText(lexed);
 
-  var result = lexed[0].type;
+  var result = tokens.RESULTUNKNOWN;
+  if (lexed[0]) {
+    var result = lexed[0].type;
+  }
   lexed.splice(0, 1);
 
   return {
@@ -406,16 +409,16 @@ function parseTagPairs(lexed) {
 function parseMoveText(lexed) {
   var moves = [];
 
-  while (lexed[0].type === tokens.COMMENT) {
+  while (lexed[0] && lexed[0].type === tokens.COMMENT) {
     lexed.splice(0, 1);
   }
 
-  while (lexed[0].type === tokens.INTEGER) {
+  while (lexed[0] && lexed[0].type === tokens.INTEGER) {
     // 1
     lexed.splice(0, 1);
 
     // .
-    while (lexed[0].type === tokens.PERIOD) {
+    while (lexed[0] && lexed[0].type === tokens.PERIOD) {
       lexed.splice(0, 1);
     }
 
@@ -423,12 +426,12 @@ function parseMoveText(lexed) {
     var halfMove = {san: lexed[0].value};
     lexed.splice(0, 1);
 
-    while (lexed[0].type === tokens.NAG) {
+    while (lexed[0] && lexed[0].type === tokens.NAG) {
       halfMove.nag = exports.nagInfo(lexed[0].value);
       lexed.splice(0, 1);
     }
 
-    while (lexed[0].type === tokens.COMMENT) {
+    while (lexed[0] && lexed[0].type === tokens.COMMENT) {
       if (!halfMove.comments) {
         halfMove.comments = [];
       }
@@ -438,16 +441,16 @@ function parseMoveText(lexed) {
     }
 
     // 1/2-1/2
-    if (lexed[0].type === tokens.RESULTUNKNOWN
+    if (lexed[0] && (lexed[0].type === tokens.RESULTUNKNOWN
       || lexed[0].type === tokens.RESULTDRAW
       || lexed[0].type === tokens.RESULTWHITEWINS
-      || lexed[0].type === tokens.RESULTBLACKWINS) {
+      || lexed[0].type === tokens.RESULTBLACKWINS)) {
         moves.push(halfMove);
         return moves;
       }
 
       // variation
-      while (lexed[0].type === tokens.LPAREN) {
+      while (lexed[0] && lexed[0].type === tokens.LPAREN) {
         lexed.splice(0, 1); // '('
         var variation = parseMoveText(lexed);
         if (!halfMove.variations) {
@@ -457,22 +460,22 @@ function parseMoveText(lexed) {
       }
 
       // ')'
-      if (lexed[0].type === tokens.RPAREN) {
+      if (lexed[0] && lexed[0].type === tokens.RPAREN) {
         lexed.splice(0, 1);
         moves.push(halfMove);
         return moves;
       }
 
-      if (lexed[0].type === tokens.INTEGER) {
+      if (lexed[0] && lexed[0].type === tokens.INTEGER) {
         moves.push(halfMove);
         continue;
       }
 
       // 1/2-1/2
-      if (lexed[0].type === tokens.RESULTUNKNOWN
+      if (lexed[0] && (lexed[0].type === tokens.RESULTUNKNOWN
         || lexed[0].type === tokens.RESULTDRAW
         || lexed[0].type === tokens.RESULTWHITEWINS
-        || lexed[0].type === tokens.RESULTBLACKWINS) {
+        || lexed[0].type === tokens.RESULTBLACKWINS)) {
           moves.push(halfMove);
           return moves;
         }
@@ -481,12 +484,12 @@ function parseMoveText(lexed) {
         var halfMove2 = {san: lexed[0].value};
         lexed.splice(0, 1);
 
-        while (lexed[0].type === tokens.NAG) {
+        while (lexed[0] && lexed[0].type === tokens.NAG) {
           halfMove2.nag = exports.nagInfo(lexed[0].value);
           lexed.splice(0, 1);
         }
 
-        while (lexed[0].type === tokens.COMMENT) {
+        while (lexed[0] && lexed[0].type === tokens.COMMENT) {
           if (!halfMove2.comments) {
             halfMove2.comments = [];
           }
@@ -496,17 +499,17 @@ function parseMoveText(lexed) {
         }
 
         // 1/2-1/2
-        if (lexed[0].type === tokens.RESULTUNKNOWN
+        if (lexed[0] && (lexed[0].type === tokens.RESULTUNKNOWN
           || lexed[0].type === tokens.RESULTDRAW
           || lexed[0].type === tokens.RESULTWHITEWINS
-          || lexed[0].type === tokens.RESULTBLACKWINS) {
+          || lexed[0].type === tokens.RESULTBLACKWINS)) {
             moves.push(halfMove);
             moves.push(halfMove2);
             return moves;
           }
 
           // variation
-          while (lexed[0].type === tokens.LPAREN) {
+          while (lexed[0] && lexed[0].type === tokens.LPAREN) {
             lexed.splice(0, 1); // '('
             var variation = parseMoveText(lexed);
             if (!halfMove2.variations) {
@@ -519,7 +522,7 @@ function parseMoveText(lexed) {
           moves.push(halfMove2);
 
           // ')'
-          if (lexed[0].type === tokens.RPAREN) {
+          if (lexed[0] && lexed[0].type === tokens.RPAREN) {
             lexed.splice(0, 1);
             return moves;
           }
@@ -571,7 +574,7 @@ function parseMoveText(lexed) {
         var pgn = "[FEN \"" + history.root.fen + "\"]\n";
 
         for (var key in history.root.tags) {
-          if (history.root.tags.hasOwnProperty(key)) {
+          if (history.root.tags.hasOwnProperty(key) && history.root.tags[key]) {
             pgn += "[" + key + " \"" + history.root.tags[key] + "\"]\n";
           }
         }

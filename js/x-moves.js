@@ -19,7 +19,10 @@ xtag.register('x-move', {
 					ih += ' ' + newValue.nag;
 				}
 				self.innerHTML = ih;
+				// self.innerHTML += '<' + self.historyMove.evaluation + '>';
 			}
+
+			self.updateEvaluation();
 
 			if (newValue.comments) {
 				for (var i = 0; i < newValue.comments.length; i++) {
@@ -74,6 +77,19 @@ xtag.register('x-move', {
 			self.addEventListener('click', () => {
 				self.board.setHistory(self.historyMove);
 			});
+		},
+		updateEvaluation: function() {
+			if (this.historyMove.evaluation) {
+				var ev = this.historyMove.evaluation;
+
+				if (ev > 10) { ev = 10; }
+				if (ev < -10) { ev = -10; }
+				ev += 10; // shift range from [-10, 10] to [0, 20]
+				ev *= 255 / 20; // stretch range to [0, 255]
+
+				var color = 'rgb(' + (255 - ev) + ',' + ev + ',' + 120 + ')';
+				this.style.color = color;
+			}
 		}
 	},
   accessors: {
@@ -159,6 +175,7 @@ xtag.register('x-variation', {
 				}
 
         var move = document.createElement('x-move');
+				cur.move = move;
         move.move = cur;
 				if (cur) {
 					move.moveNumber = moveNumber;
@@ -179,6 +196,7 @@ xtag.register('x-variation', {
 
           if (cur.next) {
             move = document.createElement('x-move');
+						cur.next.move = move;
             move.move = cur.next;
             move.board = this.board;
 						if (cur.color == 'b') {
@@ -378,12 +396,12 @@ xtag.register('x-moves', {
 				this._board = newValue;
 
         newValue.addEventListener('move', () => {
-					var variation = xtag.queryChildren(self, 'x-variation')[0];
-					variation.style.marginLeft = 0;
-					variation.level = 0;
-          variation.board = newValue;
+					this.variation = xtag.queryChildren(self, 'x-variation')[0];
+					this.variation.style.marginLeft = 0;
+					this.variation.level = 0;
+          this.variation.board = newValue;
           if (newValue.history.root) {
-            variation.root = newValue.history.root;
+            this.variation.root = newValue.history.root;
 
 						if (!newValue.history.root.tags) {
 							newValue.history.root.tags = {
