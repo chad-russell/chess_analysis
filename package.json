@@ -36,23 +36,24 @@
     "devtron": "^1.0.0",
     "electron-packager": "^7.0.1",
     "electron-prebuilt": "~1.0.1",
+    "electron-rebuild": "^1.1.4",
     "electron-winstaller": "^2.2.0",
     "mocha": "^2.3.4",
     "request": "^2.70.0",
     "rimraf": "^2.5.2",
     "signcode": "^0.4.0",
     "spectron": "~3.0.0",
-    "standard": "^6.0.8",
-    "electron-rebuild": "^1.1.4"
+    "standard": "^6.0.8"
   },
   "dependencies": {
     "electron-json-storage": "^2.0.0",
+    "electron-settings": "^1.0.4",
     "electron-shortcut-normalizer": "^1.0.0",
     "glob": "^6.0.4",
     "highlight.js": "^9.3.0",
-    "uci": "^0.3.3",
-    "electron-settings": "^1.0.4",
-    "sqlite3": "^3.1.4"
+    "node-sqlite-purejs": "0.0.2",
+    "sqlite3": "^3.1.4",
+    "uci": "^0.3.3"
   },
   "standard": {
     "env": {

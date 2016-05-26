@@ -73,6 +73,7 @@ xtag.register('x-database', {
 
 					var row = document.createElement('tr');
 					this._rows.push(row);
+					row.game = game;
 					var whiteTd = document.createElement('td');
 					var blackTd = document.createElement('td');
 					var resultTd = document.createElement('td');
@@ -132,6 +133,62 @@ xtag.register('x-database', {
 					});
 
 					this.body.appendChild(row);
+
+					row.pgnText = () => {
+						var chess = undefined;
+
+						var throwawayFENs = parsed.tagPairs.filter((tp) => {
+							return tp.key.toLowerCase() == 'FEN'.toLowerCase();
+						});
+
+						if (throwawayFENs.length > 0) {
+							chess = new requirechess.Chess(throwawayFENs[0].value);
+						}
+						else {
+							chess = new requirechess.Chess();
+						}
+						var throwawayFEN = chess.fen();
+
+						var transformed = pgn.transform(parsed.moves, chess);
+						transformed[0].previous = {
+							fen: throwawayFEN,
+							next: transformed[0],
+						};
+
+						transformed[0].previous.tags = {};
+
+						if (whiteTag.length > 0) {
+							transformed[0].previous.tags.white = whiteTag[0].value;
+						}
+						if (blackTag.length > 0) {
+							transformed[0].previous.tags.black = blackTag[0].value;
+						}
+						if (eventTag.length > 0) {
+							transformed[0].previous.tags.event = eventTag[0].value;
+						}
+						if (dateTag.length > 0) {
+							transformed[0].previous.tags.date = dateTag[0].value;
+						}
+						if (resultTag.length > 0) {
+							transformed[0].previous.tags.result = resultTag[0].value;
+						}
+						if (roundTag.length > 0) {
+							transformed[0].previous.tags.round = roundTag[0].value;
+						}
+						if (siteTag.length > 0) {
+							transformed[0].previous.tags.site = siteTag[0].value;
+						}
+						if (ecoTag.length > 0) {
+							transformed[0].previous.tags.eco = ecoTag[0].value;
+						}
+
+						var history = {
+							root: transformed[0].previous,
+							current: transformed[0].previous
+						};
+
+						return pgn.toString(history);
+					}
 
 					row.select = () => {
 						var chess = undefined;

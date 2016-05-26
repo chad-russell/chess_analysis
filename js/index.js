@@ -25,34 +25,11 @@ const requiredialog = remote.dialog;
 const fs = require('fs');
 const pgn = require('./js/pgn');
 const ElectronSettings = require('electron-settings');
-// const sqlite3 = require('sqlite3');
 
 // components
 require('./js/x-board');
 require('./js/x-board-setup');
 require('./js/x-board-controls');
-
-// var db = new sqlite3.Database(':memory:');
-// db.serialize(() => {
-//   db.run("CREATE TABLE lorem (info TEXT)");
-//
-//   var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-//   for (var i = 0; i < 10; i++) {
-//       stmt.run("Ipsum " + i);
-//   }
-//   stmt.finalize();
-//
-//   db.each("SELECT rowid AS id, info FROM lorem", (err, row) => {
-//       console.log(row.id + ": " + row.info);
-//   });
-// });
-//
-// db.close();
-
-// window.addEventListener('contextmenu', function (e) {
-//   e.preventDefault();
-//   menu.popup(remote.getCurrentWindow());
-// }, false);
 
 var controls = () => {
   return document.querySelector('x-board-controls');
@@ -171,8 +148,23 @@ var template = [
         click: () => {
           var savePath = requiredialog.showSaveDialog();
           fs.writeFile(savePath, pgn.toString(board().history), (err) => {
-            if (err) {
-              console.log(err);
+            if (err) { console.log(err); }
+          });
+        }
+      },
+      {
+        label: 'Save Current Datbase',
+        click: () => {
+          var database = xtag.queryChildren(controls(), 'div x-tabbox ul li x-database')[0];
+          var index = database._rows.indexOf(database._selectedRow);
+          var tmpRows = database._rows.map((r) => r.pgnText());
+          if (index !== -1) {
+            tmpRows[index] = pgn.toString(board().history);
+          }
+          fs.writeFile(database.openPath, tmpRows.join('\n\n'), (err) => {
+            if (err) { console.log(err); }
+            else {
+              alert('Done!');
             }
           });
         }
@@ -265,6 +257,7 @@ function importPgn(path) {
 
     database.controls = controls();
     database.games = parsed;
+    database.openPath = path;
 
     database.controls.selectTab(2);
   });
