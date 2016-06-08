@@ -1,5 +1,7 @@
 require('./x-moves');
 require('./x-computer-line');
+require('./x-splitbox');
+
 const {ipcRenderer} = require('electron');
 var pgn = require('./pgn');
 
@@ -327,16 +329,24 @@ xtag.register('x-color-dialog', {
 
 xtag.register('x-board-controls', {
 	content: `
-	<div style="display: flex; flex-direction: row; height: 95vh; max-height: 95vh;">
-		<x-board id='board'></x-board>
-		<x-tabbox tab-position="top" selected-index="0" transition style="flex-grow: 1;">
+	<div style="display: flex; flex-direction: row; height: 100vh; max-height: 100vh;">
+
+		<x-splitbox style="width: 100%;">
+		<section id='left' style='flex: 0 0 40%;'>
+			<x-board id='board'></x-board>
+		</section>
+
+		<div splitter></div>
+
+		<section id='right' style='flex-grow: 1'>
+		<x-tabbox tab-position='top' selected-index='0' transition style='flex-grow: 1; width: 100%; height: 100%;'>
 			<menu>
 				<button class='pure-button'>Moves</button>
 				<button class='pure-button'>Computer Lines</button>
 				<button class='pure-button'>Database</button>
 			</menu>
 			<ul>
-				<li style="display: flex; flex-direction: column;">
+				<li style='display: flex; flex-direction: column;'>
 					<x-moves id='moves' style="flex-wrap: wrap; flex-grow: 1; overflow: none"></x-moves>
 					<div style='display: flex; align-self: flex-end; margin-right: auto; justify-content: space-between; width: 100%;'>
 						<x-nag nag='4'></x-nag>
@@ -372,6 +382,10 @@ xtag.register('x-board-controls', {
 			</ul>
 		</x-tabbox>
 		<x-color-dialog></x-color-dialog>
+		</section>
+
+		</x-splitbox>
+
 	</div>
 	`,
 	lifecycle: {
@@ -381,18 +395,38 @@ xtag.register('x-board-controls', {
 
 			var board = xtag.queryChildren(this, 'div x-board')[0];
 			this.board = board;
-			var viewportRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
-			var viewportHeight = viewportRect.height;
-			board.style.width = viewportHeight + 'px';
-			board.style.minWidth = viewportHeight + 'px';
-			board.style.height = viewportHeight + 'px';
+			this.setBoardDimensions();
+			this.makeBoardSquare();
+
+			var splitbox = xtag.queryChildren(this, 'div x-splitbox')[0];
+			splitbox.addEventListener('splitter-resize', () => {
+				this.makeBoardSquare();
+			});
+
+			var leftSection = xtag.queryChildren(this, 'div x-splitbox section#left')[0];
+			var rightSection = xtag.queryChildren(this, 'div x-splitbox section#right')[0];
+
+			var clientRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
+			var leftPercent = 100 * clientRect.height / clientRect.width;
+			if (clientRect.height > clientRect.width) {
+				leftPercent = 30;
+			}
+
+			leftSection.style.flex = '0 0' + leftPercent + '%';
+			rightSection.style.flex = '0 0' + (100 - leftPercent) + '%';
 
 			ipcRenderer.on('import-pgn', (event, message) => {
 				importPgn(message);
 			});
 
 			var tabbox = xtag.queryChildren(this, 'div x-tabbox')[0];
-			tabbox.style.width = viewportRect.width - viewportHeight + 'px';
+			var viewportRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
+			var viewportHeight = viewportRect.height;
+			var viewportWidth = viewportRect.width;
+
+			var leftSection = xtag.queryChildren(this, 'div x-splitbox section#left')[0];
+			leftSection.style.width = viewportRect.height + 'px';
+			leftSection.style.maxWidth = viewportRect.height + 'px';
 
 			var nags = xtag.queryChildren(this, 'div x-tabbox ul li div x-nag');
 			nags.forEach((nag) => {
@@ -647,8 +681,11 @@ xtag.register('x-board-controls', {
 					if (move) {
 						var from = coordinates(move.from);
 						var to = coordinates(move.to);
-						board.makeMove(from.rank, from.file, to.rank, to.file, move.promotion, move);
-						board.chess.load(board.history.current.fen);
+
+						if (from && to) {
+							board.makeMove(from.rank, from.file, to.rank, to.file, move.promotion, move);
+							board.chess.load(board.history.current.fen);
+						}
 					}
 				}
 			};
@@ -689,6 +726,20 @@ xtag.register('x-board-controls', {
 			dialog.addEventListener('close', () => {
 				dialog.close();
 			})
+		},
+		setBoardDimensions: function() {
+			var viewportRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
+
+			var target = xtag.queryChildren(this, 'div x-splitbox section#left')[0];
+
+			target.style.width = viewportRect.height + 'px';
+			target.style.height = viewportRect.height + 'px';
+		},
+		makeBoardSquare: function() {
+			var leftSection = xtag.queryChildren(this, 'div x-splitbox section#left')[0];
+			var boardRect = leftSection.getBoundingClientRect();
+			this.board.boardDiv.style.height = boardRect.width + 'px';
+			this.board.boardDiv.style.width = boardRect.width + 'px';
 		}
 	}
 });

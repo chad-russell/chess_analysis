@@ -2,7 +2,7 @@ require('./x-square');
 require('./x-promotion-modal');
 
 xtag.register('x-board', {
-  content: `<div id='board' style='position: relative; width: 100%; height: 100%'>
+  content: `<div id='board' style='position: relative;'>
   <canvas style='position: absolute;'></canvas>
   </div>`,
   lifecycle: {
