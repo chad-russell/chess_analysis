@@ -62,6 +62,14 @@ exports.startAnalysis = function(p, e, callback) {
         multipvValue = parseInt(multipvFound[0].substring(' multipv '.length));
       }
 
+      // look for 'depth'
+      var depthMatch = / depth (\d+)/
+      var depthFound = depthMatch.exec(info);
+      var depthValue = null;
+      if (depthFound && depthFound.length > 0) {
+        depthValue = parseInt(depthFound[0].substring(' depth '.length));
+      }
+
       // look for 'pv'
       var pvMatch = / pv( [a-h][0-8][a-h][0-8][nNbBrRqQ]?)+/
       var pvFound = pvMatch.exec(info);
@@ -81,7 +89,7 @@ exports.startAnalysis = function(p, e, callback) {
 
       // console.log(multipvValue, split, scoreCPValue);
       if (multipvValue && split && scoreCPValue) {
-        callback(multipvValue, split, scoreCPValue);
+        callback(multipvValue, split, scoreCPValue, depthValue);
       }
     });
   })

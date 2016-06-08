@@ -82,13 +82,56 @@ xtag.register('x-move', {
 			if (this.historyMove.evaluation) {
 				var ev = this.historyMove.evaluation;
 
-				if (ev > 10) { ev = 10; }
-				if (ev < -10) { ev = -10; }
-				ev += 10; // shift range from [-10, 10] to [0, 20]
-				ev *= 255 / 20; // stretch range to [0, 255]
+				this.setAttribute('title', 'Computer Evaluation: ' + ev + ' -- Depth: ' + this.historyMove.depth);
 
-				var color = 'rgb(' + (255 - ev) + ',' + ev + ',' + 120 + ')';
-				this.style.color = color;
+				if (ev < -4) {
+					this.style.color = '#CC0000';
+				}
+				else if (ev < -3.5) {
+					this.style.color = '#AA0000';
+				}
+				else if (ev < -3) {
+					this.style.color ='#880000';
+				}
+				else if (ev < -2.5) {
+					this.style.color ='#770000';
+				}
+				else if (ev < -2) {
+					this.style.color = '#660000';
+				}
+				else if (ev < -1.5) {
+					this.style.color = '#550000';
+				}
+				else if (ev < -1) {
+					this.style.color = '#440000';
+				}
+				else if (ev < -0.5) {
+					this.style.color = '#300000';
+				}
+				else if (ev < 0) {
+					// default color is fine
+				}
+				else if (ev < 0.5) {
+					this.style.color = '#003000';
+				}
+				else if (ev < 1) {
+					this.style.color = '#004400';
+				}
+				else if (ev < 1.5) {
+					this.style.color = '#005500';
+				}
+				else if (ev < 2) {
+					this.style.color = '#006600';
+				}
+				else if (ev < 2.5) {
+					this.style.color = '#007700';
+				}
+				else if (ev < 3) {
+					this.style.color = '#008800';
+				}
+				else {
+					this.style.color = '#00CC00';
+				}
 			}
 		}
 	},

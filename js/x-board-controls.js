@@ -510,7 +510,7 @@ xtag.register('x-board-controls', {
 				var fenPos = board.chess.fen();
 				p = uciwrapper.setPosition(p, engine, fenPos);
 				p = uciwrapper.setMultiPV(p, engine, 4);
-				p = uciwrapper.startAnalysis(p, engine, (mpv, _moves, cp) => {
+				p = uciwrapper.startAnalysis(p, engine, (mpv, _moves, cp, depth) => {
 					// invert evaluation if black to move
 					if (board.chess.turn() == 'b') {
 						cp = -cp;
@@ -520,8 +520,9 @@ xtag.register('x-board-controls', {
 						case 1:
 						line3.evaluation = cp;
 						line3.moves = formatMoves(_moves);
-						board.history.current.evaluation = cp;
-						if (board.history.current.move) {
+						if ((!board.history.current.depth || depth > board.history.current.depth) && board.history.current.move) {
+							board.history.current.depth = depth;
+							board.history.current.evaluation = cp;
 							board.history.current.move.updateEvaluation();
 						}
 						case 2:
