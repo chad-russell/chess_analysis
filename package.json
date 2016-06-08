@@ -51,8 +51,6 @@
     "electron-shortcut-normalizer": "^1.0.0",
     "glob": "^6.0.4",
     "highlight.js": "^9.3.0",
-    "node-sqlite-purejs": "0.0.2",
-    "sqlite3": "^3.1.4",
     "uci": "^0.3.3"
   },
   "standard": {
