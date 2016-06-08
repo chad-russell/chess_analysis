@@ -408,9 +408,6 @@ xtag.register('x-board-controls', {
 
 			var clientRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
 			var leftPercent = 100 * clientRect.height / clientRect.width;
-			if (clientRect.height > clientRect.width) {
-				leftPercent = 30;
-			}
 
 			leftSection.style.flex = '0 0' + leftPercent + '%';
 			rightSection.style.flex = '0 0' + (100 - leftPercent) + '%';
@@ -730,11 +727,12 @@ xtag.register('x-board-controls', {
 		},
 		setBoardDimensions: function() {
 			var viewportRect = xtag.queryChildren(this, 'div')[0].getBoundingClientRect();
+			var viewportHeight = viewportRect.height;
 
 			var target = xtag.queryChildren(this, 'div x-splitbox section#left')[0];
 
-			target.style.width = viewportRect.height + 'px';
-			target.style.height = viewportRect.height + 'px';
+			target.style.width = viewportHeight + 'px';
+			target.style.height = viewportHeight + 'px';
 		},
 		makeBoardSquare: function() {
 			var leftSection = xtag.queryChildren(this, 'div x-splitbox section#left')[0];

@@ -55,6 +55,7 @@ xtag.register('x-board-setup', {
 			self.flipped = false;
 
       self.board = xtag.queryChildren(self, 'div x-board')[0];
+      self.board.boardDiv.style.height = '100%';
       self.board.chess.load('4k3/8/8/8/8/8/8/4K3 w - - 0 1');
       self.board.loadPieces();
 
