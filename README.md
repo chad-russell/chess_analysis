@@ -28,7 +28,7 @@ Computer Analysis
 
 ## Downloading
 
-You can [download the latest release](https://github.com/Nf5/Nf5/releases) for your operating system or build it yourself (see below).
+You can [download the latest release](https://github.com/chad-russell/nf5/releases) for your operating system or build it yourself (see below).
 
 ## Building
 
